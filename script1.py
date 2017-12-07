@@ -22,6 +22,9 @@ with open(FILENAME, "r") as file:
 		if start == '':
 			start = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S,%f")
 		if start > datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S,%f"):
+			for key, value in insert_data.iteritems():
+				cur.execute("INSERT INTO raw_data(timeframe_start, api_name, http_method, count_http_code_5xx) VALUES(%s, %s, %s, %s)", (start, key[0], key[1], value))
+			insert_data = {}
 			start = datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S,%f")
 			continue
 		if datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S,%f") - start >= DELTA:
